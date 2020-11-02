@@ -3,13 +3,12 @@ package com.okariastudio.whatdidyoumissduringthenight
 import android.content.Context
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
-import android.widget.ExpandableListView
+import android.widget.*
 import androidx.recyclerview.widget.RecyclerView
 import com.okariastudio.whatdidyoumissduringthenight.models.Article
+import org.w3c.dom.Text
 
 class MyAdapter(var articles : List<Article>,var context : Context) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-    private lateinit var onItemClickListener : OnItemClickListener
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         TODO("Not yet implemented")
@@ -25,20 +24,18 @@ class MyAdapter(var articles : List<Article>,var context : Context) : RecyclerVi
         return 0
     }
 
-    fun setOnItemClickListener(onItemClickListener: OnItemClickListener) {
-        this.onItemClickListener = onItemClickListener
-    }
-
-    class MyViewHolder(itemView : View,onItemClickListener: OnItemClickListener) : RecyclerView.ViewHolder(itemView){
+    class MyViewHolder(itemView : View) : RecyclerView.ViewHolder(itemView){
             init {
-                //var title = itemView.findViewById(R.id.title)
-
+                val title = itemView.findViewById(R.id.title) as TextView
+                val desc = itemView.findViewById(R.id.desc) as TextView
+                val author = itemView.findViewById(R.id.author) as TextView
+                val published_at = itemView.findViewById(R.id.publishedAt) as TextView
+                val source = itemView.findViewById(R.id.source) as TextView
+                val time = itemView.findViewById(R.id.time) as TextView
+                val img = itemView.findViewById(R.id.img) as ImageView
+                val progressBar = itemView.findViewById(R.id.progress_load_photo) as ProgressBar
             }
     }
 
-}
-
-interface OnItemClickListener {
-    fun onItemClick(view : View, position: Int)
 }
 
