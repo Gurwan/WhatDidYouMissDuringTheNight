@@ -1,5 +1,6 @@
 package com.okariastudio.whatdidyoumissduringthenight.api
 
+import android.annotation.SuppressLint
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -23,13 +24,11 @@ fun getApiClient() : Retrofit {
 
 fun getUnsafeOkHttpClient() : OkHttpClient.Builder {
     val trustAllCerts = arrayOf<TrustManager>(object : X509TrustManager{
-        override fun checkClientTrusted(chain: Array<out X509Certificate>?, authType: String?) {
-            TODO("Not yet implemented")
-        }
+        @SuppressLint("TrustAllX509TrustManager")
+        override fun checkClientTrusted(chain: Array<out X509Certificate>?, authType: String?) {}
 
-        override fun checkServerTrusted(chain: Array<out X509Certificate>?, authType: String?) {
-            TODO("Not yet implemented")
-        }
+        @SuppressLint("TrustAllX509TrustManager")
+        override fun checkServerTrusted(chain: Array<out X509Certificate>?, authType: String?) {}
 
         override fun getAcceptedIssuers(): Array<X509Certificate> {
             return arrayOf()

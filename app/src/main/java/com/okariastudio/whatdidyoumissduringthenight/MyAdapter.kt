@@ -19,14 +19,12 @@ import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.Target
 import com.okariastudio.whatdidyoumissduringthenight.models.Article
-import org.ocpsoft.prettytime.PrettyTime
-import org.w3c.dom.Text
-import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
 
 class MyAdapter(private val articles : List<Article>,private val context : Context) : RecyclerView.Adapter<MyAdapter.MyViewHolder>() {
     private var onItemClickListener: OnItemClickListener? = null
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         val view = LayoutInflater.from(context).inflate(R.layout.item, parent, false)
         return MyViewHolder(view, onItemClickListener)
@@ -38,7 +36,7 @@ class MyAdapter(private val articles : List<Article>,private val context : Conte
 
     @SuppressLint("CheckResult")
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        val (source, author, title, description, _, urlToImage, publishedAt) = articles[position]
+        var (source, title, description, _, urlToImage, publishedAt) = articles[position]
         val requestOptions = RequestOptions()
         //options to load the image
         requestOptions.placeholder(ColorDrawable(Color.parseColor("#faca5f")))
@@ -47,6 +45,9 @@ class MyAdapter(private val articles : List<Article>,private val context : Conte
         requestOptions.centerCrop()
         requestOptions.timeout(3000)
         // Glide is an image loading framework
+        if(urlToImage == null){
+            urlToImage = "https://static.foxnews.com/foxnews.com/content/uploads/2020/11/4pm-Florida-voting-1-1.jpg";
+        }
         Glide.with(context)
                 .load(urlToImage)
                 .apply(requestOptions)
@@ -63,17 +64,18 @@ class MyAdapter(private val articles : List<Article>,private val context : Conte
                 })
                 .transition(DrawableTransitionOptions.withCrossFade())
                 .into(holder.imageView)
-        holder.title.text = title
+
+        //To remove the name of the media (do not repeat the name)
+        val lastIndexOfTiret : Int = title.lastIndexOf("-")
+        holder.title.text = title.subSequence(0,lastIndexOfTiret)
         holder.desc.text = description
         holder.source.text = source.name
-        val p = PrettyTime(Locale(Locale.getDefault().toString().toLowerCase()))
-        try {
-            holder.time.text = p.format(SimpleDateFormat("dd-MM-yyyy'T'HH:mm:ss'Z'", Locale.FRANCE).parse(publishedAt))
-        } catch (e: ParseException) {
-            e.printStackTrace()
-        }
+        val simpleDateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'",Locale.ENGLISH)
+        val datePublish: Date ?= simpleDateFormat.parse(publishedAt)
+        val newFormat = SimpleDateFormat("dd/MM/yyyy HH:mm:ss", Locale.FRANCE)
+        @Suppress("NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
+        publishedAt = newFormat.format(datePublish)
         holder.published_ad.text = publishedAt
-        holder.author.text = author
     }
 
     override fun getItemCount(): Int {
@@ -83,10 +85,8 @@ class MyAdapter(private val articles : List<Article>,private val context : Conte
     inner class MyViewHolder(itemView : View,onItemClickListener : OnItemClickListener?) : RecyclerView.ViewHolder(itemView), View.OnClickListener{
         var title: TextView
         var desc: TextView
-        var author: TextView
         var published_ad: TextView
         var source: TextView
-        var time: TextView
         var imageView: ImageView
         var progressBar: ProgressBar
         var onItemClickListener: OnItemClickListener?
@@ -98,10 +98,8 @@ class MyAdapter(private val articles : List<Article>,private val context : Conte
             itemView.setOnClickListener(this)
             title = itemView.findViewById(R.id.title)
             desc = itemView.findViewById(R.id.desc)
-            author = itemView.findViewById(R.id.author)
             published_ad = itemView.findViewById(R.id.publishedAt)
             source = itemView.findViewById(R.id.source)
-            time = itemView.findViewById(R.id.time)
             imageView = itemView.findViewById(R.id.img)
             progressBar = itemView.findViewById(R.id.progress_load_photo)
             this.onItemClickListener = onItemClickListener
