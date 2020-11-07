@@ -23,7 +23,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 class MyAdapter(private val articles : List<Article>,private val context : Context) : RecyclerView.Adapter<MyAdapter.MyViewHolder>() {
-    private var onItemClickListener: OnItemClickListener? = null
+    var onItemClickListener: OnItemClickListener? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         val view = LayoutInflater.from(context).inflate(R.layout.item, parent, false)

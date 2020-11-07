@@ -2,16 +2,20 @@ package com.okariastudio.whatdidyoumissduringthenight
 
 import android.app.SearchManager
 import android.content.Context
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
+import android.view.View
+import android.widget.Adapter
 import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.okariastudio.whatdidyoumissduringthenight.api.ApiInterface
 import com.okariastudio.whatdidyoumissduringthenight.api.getApiClient
 import com.okariastudio.whatdidyoumissduringthenight.models.Article
@@ -21,16 +25,21 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), SwipeRefreshLayout.OnRefreshListener {
 
     private lateinit var recyclerView : RecyclerView
     private lateinit var layoutManager : RecyclerView.LayoutManager
     private var articles : MutableList<Article> = mutableListOf()
     private lateinit var adapter : MyAdapter
+    private lateinit var swipeRefreshLayout: SwipeRefreshLayout
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        swipeRefreshLayout = findViewById(R.id.swipe_refresh_layout)
+        swipeRefreshLayout.setOnRefreshListener(this)
+        swipeRefreshLayout.setColorSchemeResources(R.color.colorAccent)
 
         recyclerView = findViewById(R.id.recyclerView)
         layoutManager = LinearLayoutManager(this)
@@ -42,9 +51,12 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun loadJson(keyword : String){
+
         val apiInterface : ApiInterface = getApiClient().create(ApiInterface::class.java)
         val country = "fr"
         //TODO("Add function to switch the country manually")
+
+        swipeRefreshLayout.isRefreshing = true
 
         var call : Call<News> = apiInterface.getNews(country, API_KEY)
         if(keyword.isNotEmpty()){
@@ -52,6 +64,7 @@ class MainActivity : AppCompatActivity() {
         }
         call.enqueue(object : Callback<News>{
             override fun onResponse(call: Call<News>, response: Response<News>) {
+
                 if(response.isSuccessful){
                     if(articles.isNotEmpty()){
                         articles.clear()
@@ -61,6 +74,9 @@ class MainActivity : AppCompatActivity() {
                     adapter = MyAdapter(articles,this@MainActivity)
                     recyclerView.adapter = adapter
                     adapter.notifyDataSetChanged()
+                    swipeRefreshLayout.isRefreshing = false
+
+                    viewMore()
 
                 } else {
                     Toast.makeText(this@MainActivity,"Aucun résultat",Toast.LENGTH_SHORT).show()
@@ -68,7 +84,7 @@ class MainActivity : AppCompatActivity() {
             }
 
             override fun onFailure(call: Call<News>, t: Throwable) {
-                TODO("Not yet implemented")
+                swipeRefreshLayout.isRefreshing = false
             }
 
 
@@ -102,4 +118,21 @@ class MainActivity : AppCompatActivity() {
         menuItem.icon.setVisible(false,false)
         return true
     }
+
+    override fun onRefresh() {
+        loadJson("")
+    }
+
+    private fun viewMore(){
+        adapter.onItemClickListener = object : MyAdapter.OnItemClickListener {
+            override fun onItemClick(view: View?, position: Int) {
+                val intent = Intent(this@MainActivity,InNews::class.java)
+                val article = articles[position]
+                intent.putExtra("url",article.url)
+                startActivity(intent)
+            }
+
+        }
+    }
+
 }
