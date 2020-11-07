@@ -1,8 +1,14 @@
 package com.okariastudio.whatdidyoumissduringthenight
 
+import android.app.SearchManager
+import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.widget.Toast
+import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -14,7 +20,6 @@ import com.okariastudio.whatdidyoumissduringthenight.models.News
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.util.*
 
 class MainActivity : AppCompatActivity() {
 
@@ -33,15 +38,18 @@ class MainActivity : AppCompatActivity() {
         recyclerView.itemAnimator = DefaultItemAnimator()
         recyclerView.isNestedScrollingEnabled = false
 
-        loadJson()
+        loadJson("")
     }
 
-    private fun loadJson(){
+    private fun loadJson(keyword : String){
         val apiInterface : ApiInterface = getApiClient().create(ApiInterface::class.java)
         val country = "fr"
         //TODO("Add function to switch the country manually")
 
-        val call : Call<News> = apiInterface.getNews(country, API_KEY)
+        var call : Call<News> = apiInterface.getNews(country, API_KEY)
+        if(keyword.isNotEmpty()){
+            call = apiInterface.getNewsSearch(keyword,country,"publishedAt", API_KEY)
+        }
         call.enqueue(object : Callback<News>{
             override fun onResponse(call: Call<News>, response: Response<News>) {
                 if(response.isSuccessful){
@@ -65,5 +73,33 @@ class MainActivity : AppCompatActivity() {
 
 
         })
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        val inflater : MenuInflater = menuInflater
+        inflater.inflate(R.menu.main_menu, menu)
+        val searchManager : SearchManager = getSystemService(Context.SEARCH_SERVICE) as SearchManager
+        val searchView : SearchView = menu?.findItem(R.id.action_search)?.actionView as SearchView
+        val menuItem : MenuItem = menu.findItem(R.id.action_search)
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(componentName))
+        searchView.queryHint = "Chercher dans les actualités recentes"
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                if(query?.length!! > 2){
+                    loadJson(query)
+                }
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                if (newText != null) {
+                    loadJson(newText)
+                }
+                return false
+            }
+        })
+
+        menuItem.icon.setVisible(false,false)
+        return true
     }
 }

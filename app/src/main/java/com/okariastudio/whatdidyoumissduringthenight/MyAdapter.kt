@@ -67,7 +67,11 @@ class MyAdapter(private val articles : List<Article>,private val context : Conte
 
         //To remove the name of the media (do not repeat the name)
         val lastIndexOfTiret : Int = title.lastIndexOf("-")
-        holder.title.text = title.subSequence(0,lastIndexOfTiret)
+        if(lastIndexOfTiret > 0){
+            holder.title.text = title.subSequence(0,lastIndexOfTiret)
+        } else {
+            holder.title.text = title
+        }
         holder.desc.text = description
         holder.source.text = source.name
         val simpleDateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'",Locale.ENGLISH)
