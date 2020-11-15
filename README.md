@@ -2,7 +2,7 @@
   <img src="https://github.com/Gurwan/WhatDidYouMissDuringTheNight/blob/master/app/src/main/res/drawable/logo.png" width="240" style="max-width:100%;">
 </p>
 <p align="center">
-  <strong>What did you miss during the night ?</strong>
+  <strong>What Did You Miss During The Night ?</strong>
 </p>
 
 <hr> </hr>
