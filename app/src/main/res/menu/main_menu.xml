@@ -10,10 +10,4 @@
         app:showAsAction="ifRoom"
         app:actionViewClass="androidx.appcompat.widget.SearchView"
         android:theme="@android:style/Theme.Holo.Light.DarkActionBar"/>
-
-    <item
-        android:id="@+id/action_settings"
-        android:title="@string/settings"
-        app:showAsAction="never"/>
-
 </menu>

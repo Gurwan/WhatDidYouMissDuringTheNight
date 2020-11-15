@@ -46,7 +46,7 @@ class MyAdapter(private val articles : List<Article>,private val context : Conte
         requestOptions.timeout(3000)
         // Glide is an image loading framework
         if(urlToImage == null){
-            urlToImage = "https://static.foxnews.com/foxnews.com/content/uploads/2020/11/4pm-Florida-voting-1-1.jpg";
+            urlToImage = "https://i.ytimg.com/vi/yGEOXfRfLAo/maxresdefault.jpg";
         }
         Glide.with(context)
                 .load(urlToImage)
