@@ -41,5 +41,5 @@ This application is coded in Kotlin with the Android Studio IDE.
 
 <h3> How install the app ? </h3>
 
-<a href="https://github.com/Gurwan/">APK Version</a>
+<a href="https://github.com/Gurwan/WhatDidYouMissDuringTheNight/releases/download/1.0/WDYMDTN_1.0.apk">APK Version</a>
 
