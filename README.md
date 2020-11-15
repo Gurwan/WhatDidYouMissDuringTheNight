@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://github.com/Gurwan/l" width="240" style="max-width:100%;">
+  <img src="https://github.com/Gurwan/WhatDidYouMissDuringTheNight/blob/master/app/src/main/res/drawable/logo.png" width="240" style="max-width:100%;">
 </p>
 <p align="center">
   <strong>What did you miss during the night ?</strong>
