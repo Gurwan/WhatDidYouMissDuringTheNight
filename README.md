@@ -31,9 +31,9 @@
   <li>
     And finally you can <strong> refresh </strong> to have the latest news
   </li>
-  
-  <hr> </hr>
 </ul>
+
+<hr> </hr>
 
 This application is coded in Kotlin with the Android Studio IDE.
 
