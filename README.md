@@ -33,6 +33,15 @@
   </li>
 </ul>
 
+<hr> 
+
+<h3> Screenshots </h3>
+
+<p align="center">
+  <img src="https://github.com/Gurwan/WhatDidYouMissDuringTheNight/blob/master/doc/screen.jpg" width="500" style="max-width:100%;"><br>
+  Visual 1 - Home page
+</p>
+
 <hr> </hr>
 
 This application is coded in Kotlin with the Android Studio IDE.
