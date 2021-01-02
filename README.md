@@ -1,8 +1,8 @@
 <p align="center">
-  <img src="https://github.com/Gurwan/l" width="240" style="max-width:100%;">
+  <img src="https://github.com/Gurwan/WhatDidYouMissDuringTheNight/blob/master/app/src/main/res/drawable/logo.png" width="240" style="max-width:100%;">
 </p>
 <p align="center">
-  <strong>What did you miss during the night ?</strong>
+  <strong>What Did You Miss During The Night ?</strong>
 </p>
 
 <hr> </hr>
@@ -31,9 +31,9 @@
   <li>
     And finally you can <strong> refresh </strong> to have the latest news
   </li>
-  
-  <hr> </hr>
 </ul>
+
+<hr> </hr>
 
 This application is coded in Kotlin with the Android Studio IDE.
 
@@ -41,5 +41,5 @@ This application is coded in Kotlin with the Android Studio IDE.
 
 <h3> How install the app ? </h3>
 
-<a href="https://github.com/Gurwan/">APK Version</a>
+<a href="https://github.com/Gurwan/WhatDidYouMissDuringTheNight/releases/download/1.0/WDYMDTN_1.0.apk">APK Version</a>
 
